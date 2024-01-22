@@ -1,14 +1,13 @@
 node('unix') {
     stage('Git checkout') {
-        checkout scmGit(branches: [[name: '*/main']], extensions: [],
-            userRemoteConfigs: [[url: 'https://github.com/Vladislav-createpixel-Pavlov/Allure_Cucumber']])
+        checkout scm
     }
     stage('Run tests') {
         withMaven(globalMavenSettingsConfig: '', jdk: '', maven: 'Default', mavenSettingsConfig: '', traceability: true) {
-            sh 'mvn clean test -Dtype.browser=${browser} -Dgroups=${tag}'
+            sh 'mvn clean test -Dtest=${test} -Dtype.browser=${browser}'
         }
     }
-    stage('Create allure report') {
+    stage('Allure') {
         allure includeProperties: false, jdk: '', results: [[path: 'target/reports/allure-results']]
     }
 }
