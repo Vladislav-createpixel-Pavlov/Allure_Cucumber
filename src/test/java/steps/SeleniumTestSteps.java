@@ -23,9 +23,7 @@ public class SeleniumTestSteps {
     String TITLE = "//h5";
     private WebDriver driver = new ChromeDriver();
     
-     public SeleniumTestSteps() throws IOException {
-          
-     }
+    public SeleniumTestSteps() throws IOException {}
      
     @И("открыта страница по адресу {string}")
     public void открыта_страница_по_адресу(String string) {
