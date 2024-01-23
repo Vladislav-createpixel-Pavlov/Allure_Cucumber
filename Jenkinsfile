@@ -4,7 +4,7 @@ node('unix') {
     }
     stage('Run tests') {
         withMaven(globalMavenSettingsConfig: '', jdk: '', maven: 'Default', mavenSettingsConfig: '', traceability: true) {
-            sh 'mvn clean test -Dtype.browser=${browser} -Dgroups=${tag}'
+            sh 'mvn clean test  -Dgroups=${tag} -Dtype.browser=${browser}'
         }
     }
     stage('Allure') {
