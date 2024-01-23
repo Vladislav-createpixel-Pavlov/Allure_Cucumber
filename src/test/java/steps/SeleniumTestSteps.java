@@ -2,10 +2,11 @@ package steps;
 
 
 import io.cucumber.java.ru.И;
-import managers.DriverManager;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.concurrent.TimeUnit;
 
@@ -16,20 +17,24 @@ public class SeleniumTestSteps {
      String NAME = "//input[@id='name']";
     String DROPDOWN = "//input[@id ='type']" ;
     String VEGETABLE = "//option[@value='VEGETABLE']";
-    String SAVE = "//input[@id ='save']";
+    String SAVE = "//button[@id ='save']";
     String FRUIT = "//option[@value='FRUIT']";
     String EXOTIC = "//input[@id ='exotic']";
     String TITLE = "//h5";
-    private WebDriver driver;
-    private final DriverManager driverManager = DriverManager.getDriverManager();
+    private WebDriver driver = new ChromeDriver();
+
 
     @И("открыта страница по адресу {string}")
     public void открыта_страница_по_адресу(String string) {
         System.out.println("Открытие страницы в браузере");
-        driverManager.getDriver().get(string);
-        driverManager.getDriver().manage().window().maximize();
-        driverManager.getDriver().manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        driverManager.getDriver().manage().timeouts().pageLoadTimeout(5, TimeUnit.SECONDS);
+//        driverManager.getDriver().get(string);
+        driver.get(string);
+//        driverManager.getDriver().manage().window().maximize();
+//        driverManager.getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+//        driverManager.getDriver().manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
     }
 
     @И("выполнено нажатие на {string}")
@@ -57,9 +62,10 @@ public class SeleniumTestSteps {
 
 
     @И("поле Наименование заполняется значением {string}")
-    public void поле_заполняется_значением(String string) {
+    public void поле_Наименование_заполняется_значением(String string) {
         System.out.println("Заполняю рамку значениями");
-        WebElement name = driver.findElement(By.id("name"));
+//        WebElement name = driverManager.getDriver().findElement(By.id("name"));
+        WebElement name = driver.findElement(By.xpath(NAME));
         name.sendKeys(string);
     }
     @И("выпадающее меню Тип выбирается тип {string}")
@@ -85,17 +91,18 @@ public class SeleniumTestSteps {
         System.out.println("Валидация страницы");
         assertEquals("Список товаров",driver.findElement(By.xpath(TITLE)).getText(),"Заголовок не соответствует странице");
     }
-    @И("Проверка результата добавления {string}")
-    public void Проверка_результата_добавления (String string) {
+    @И("Проверка результата добавления {string},{string},{string}")
+    public void Проверка_результата_добавления (String string,String string2,String string3) {
         System.out.println("Проверяю результат добавления");
         assertEquals(string,driver.findElement(By.xpath("//tbody/tr[5]/td[1]")).getText(),"Название не соответствует новой записи");
-        assertEquals(string,driver.findElement(By.xpath("//tbody/tr[5]/td[2]")).getText(),"Тип не соответствует новой записи");
-        assertEquals(string,driver.findElement(By.xpath("//tbody/tr[5]/td[3]")).getText(),"Чекбокс 'Экзотический' не соответствует новой записи");
+        assertEquals(string2,driver.findElement(By.xpath("//tbody/tr[5]/td[2]")).getText(),"Тип не соответствует новой записи");
+        assertEquals(string3,driver.findElement(By.xpath("//tbody/tr[5]/td[3]")).getText(),"Чекбокс 'Экзотический' не соответствует новой записи");
     }
     @И("Закрыть страницу")
     public void Закрыть_страницу() {
         System.out.println("Закрываю браузер");
-        driverManager.quitDriver();
+//        driverManager.quitDriver();
+        driver.quit();
     }
 
 }
